@@ -1,4 +1,5 @@
 import type { AppLoadContext } from '@remix-run/node';
+import { env } from 'node:process';
 
 type CloudflareContext = AppLoadContext & {
   cloudflare?: {
@@ -14,5 +15,5 @@ export function getServerEnv(context: AppLoadContext): Env {
     return fromCloudflare;
   }
 
-  return process.env as Env;
+  return env as Env;
 }

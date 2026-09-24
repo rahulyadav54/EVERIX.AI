@@ -32,6 +32,10 @@ export default defineConfig((config) => {
     plugins: [
       nodePolyfills({
         include: ['path', 'buffer'],
+        // Keep Node `process.env` on the server bundle (Vercel / SSR).
+        globals: {
+          process: false,
+        },
       }),
       config.mode !== 'test' && !isVercel && remixCloudflareDevProxy(),
       remixVitePlugin({
