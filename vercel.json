@@ -17,10 +17,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "build/server/**/*.js": {
-      "maxDuration": 300
-    }
-  }
+  ]
 }
