@@ -1,0 +1,202 @@
+.landing-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.18), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 50%, rgba(59, 130, 246, 0.12), transparent 55%),
+      radial-gradient(ellipse 50% 35% at 0% 80%, rgba(124, 58, 237, 0.14), transparent 50%);
+    animation: everix-bg-shift 18s ease-in-out infinite alternate;
+  }
+}
+
+.landing-grid {
+  position: absolute;
+  inset: -50%;
+  background-image: linear-gradient(rgba(139, 92, 246, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+  animation: everix-grid-drift 24s linear infinite;
+}
+
+.landing-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.landing-orb--1 {
+  width: 28rem;
+  height: 28rem;
+  top: -8%;
+  left: 15%;
+  background: rgba(139, 92, 246, 0.45);
+  animation: everix-float-1 14s ease-in-out infinite;
+}
+
+.landing-orb--2 {
+  width: 22rem;
+  height: 22rem;
+  top: 35%;
+  right: -5%;
+  background: rgba(59, 130, 246, 0.35);
+  animation: everix-float-2 16s ease-in-out infinite;
+}
+
+.landing-orb--3 {
+  width: 18rem;
+  height: 18rem;
+  bottom: 5%;
+  left: -4%;
+  background: rgba(167, 139, 250, 0.4);
+  animation: everix-float-3 12s ease-in-out infinite;
+}
+
+.everix-logo-hero {
+  animation: everix-logo-float 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 28px rgba(139, 92, 246, 0.35));
+}
+
+.prompt-glow-frame {
+  position: relative;
+  border-radius: 0.5rem;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    rgba(139, 92, 246, 0.15),
+    rgba(59, 130, 246, 0.35),
+    rgba(167, 139, 250, 0.2),
+    rgba(139, 92, 246, 0.15)
+  );
+  background-size: 300% 300%;
+  animation: everix-border-flow 6s ease infinite;
+  box-shadow: 0 0 40px -8px rgba(124, 58, 237, 0.35);
+  transition: box-shadow 0.35s ease;
+
+  &:focus-within {
+    box-shadow: 0 0 48px -4px rgba(124, 58, 237, 0.55);
+  }
+}
+
+.prompt-glow-inner {
+  border-radius: calc(0.5rem - 1px);
+}
+
+.enhance-stars-pulse {
+  animation: everix-stars-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes everix-stars-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+.example-prompt-chip {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px -6px rgba(124, 58, 237, 0.35);
+  }
+}
+
+@keyframes everix-bg-shift {
+  0% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes everix-grid-drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(48px, 48px);
+  }
+}
+
+@keyframes everix-float-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(24px, 32px) scale(1.08);
+  }
+}
+
+@keyframes everix-float-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-28px, 20px) scale(1.05);
+  }
+}
+
+@keyframes everix-float-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -24px) scale(1.1);
+  }
+}
+
+@keyframes everix-logo-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes everix-border-flow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-backdrop::before,
+  .landing-grid,
+  .landing-orb,
+  .everix-logo-hero,
+  .prompt-glow-frame {
+    animation: none !important;
+  }
+
+  .example-prompt-chip:hover {
+    transform: none;
+  }
+}
