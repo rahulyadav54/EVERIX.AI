@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { buildLlmRequestHeaders } from '~/lib/llm/user-settings';
+import { llmSettingsStore } from '~/lib/stores/llm-settings';
 import { createScopedLogger } from '~/utils/logger';
 
 const logger = createScopedLogger('usePromptEnhancement');
@@ -16,8 +18,15 @@ export function usePromptEnhancer() {
     setEnhancingPrompt(true);
     setPromptEnhanced(false);
 
+    const settings = llmSettingsStore.get();
+    const headers = buildLlmRequestHeaders(settings);
+
     const response = await fetch('/api/enhancer', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
       body: JSON.stringify({
         message: input,
       }),

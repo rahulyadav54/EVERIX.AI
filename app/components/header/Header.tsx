@@ -4,39 +4,52 @@ import { chatStore } from '~/lib/stores/chat';
 import { classNames } from '~/utils/classNames';
 import { HeaderActionButtons } from './HeaderActionButtons.client';
 import { EverixLogo } from '~/components/brand/EverixLogo';
-import { ChatDescription } from '~/lib/persistence/ChatDescription.client';
-
+import { AiSettingsButton } from '~/components/settings/AiSettingsButton.client';
 export function Header() {
   const chat = useStore(chatStore);
+
+  if (chat.started) {
+    return null;
+  }
 
   return (
     <header
       className={classNames(
-        'flex items-center bg-bolt-elements-background-depth-1 p-5 border-b h-[var(--header-height)]',
+        'everix-header-bar everix-entry-header-bar flex items-center px-4 sm:px-5 border-b h-[var(--header-height)] sticky top-0 z-header',
         {
           'border-transparent': !chat.started,
           'border-bolt-elements-borderColor': chat.started,
         },
       )}
     >
-      <div className="flex items-center gap-2 z-logo text-bolt-elements-textPrimary cursor-pointer">
-        <div className="i-ph:sidebar-simple-duotone text-xl" />
-        <a href="/" className="flex items-center">
-          <EverixLogo />
+      <div className="flex items-center gap-2 z-logo text-bolt-elements-textPrimary min-w-0">
+        <button
+          type="button"
+          className="i-ph:sidebar-simple-duotone text-xl text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary transition-theme p-1 -ml-1 rounded-md hover:bg-bolt-elements-item-backgroundActive"
+          aria-label="Open chat history"
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent('everix:toggle-menu'));
+          }}
+        />
+        <a href="/" className="flex items-center shrink-0">
+          <EverixLogo variant="header" />
         </a>
       </div>
-      <span className="flex-1 px-4 truncate text-center text-bolt-elements-textPrimary">
-        <ClientOnly>{() => <ChatDescription />}</ClientOnly>
+      <span className="flex-1 px-3 sm:px-6 truncate text-center text-bolt-elements-textSecondary font-medium text-sm">
+        New workspace
       </span>
-      {chat.started && (
-        <ClientOnly>
-          {() => (
-            <div className="mr-1">
-              <HeaderActionButtons />
-            </div>
-          )}
-        </ClientOnly>
-      )}
+      <ClientOnly>
+        {() => (
+          <div className="flex items-center gap-1 shrink-0">
+            <AiSettingsButton />
+            {chat.started && (
+              <div className="mr-1">
+                <HeaderActionButtons />
+              </div>
+            )}
+          </div>
+        )}
+      </ClientOnly>
     </header>
   );
 }

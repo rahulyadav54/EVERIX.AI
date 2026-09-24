@@ -49,18 +49,26 @@ export const Artifact = memo(({ messageId }: ArtifactProps) => {
   }, [actions]);
 
   return (
-    <div className="artifact border border-bolt-elements-borderColor flex flex-col overflow-hidden rounded-lg w-full transition-border duration-150">
+    <div className="artifact everix-artifact-card flex flex-col w-full transition-all duration-200">
       <div className="flex">
         <button
-          className="flex items-stretch bg-bolt-elements-artifacts-background hover:bg-bolt-elements-artifacts-backgroundHover w-full overflow-hidden"
+          className="flex items-stretch hover:bg-bolt-elements-artifacts-backgroundHover w-full overflow-hidden text-left"
           onClick={() => {
             const showWorkbench = workbenchStore.showWorkbench.get();
             workbenchStore.showWorkbench.set(!showWorkbench);
           }}
         >
-          <div className="px-5 p-3.5 w-full text-left">
-            <div className="w-full text-bolt-elements-textPrimary font-medium leading-5 text-sm">{artifact?.title}</div>
-            <div className="w-full w-full text-bolt-elements-textSecondary text-xs mt-0.5">Click to open Workbench</div>
+          <div className="flex items-center gap-3 px-4 py-3.5 w-full">
+            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-bolt-elements-item-backgroundAccent text-accent-600 shrink-0">
+              <div className="i-ph:code-bold text-lg" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-bolt-elements-textPrimary font-medium leading-5 text-sm truncate">
+                {artifact?.title}
+              </div>
+              <div className="text-bolt-elements-textSecondary text-xs mt-0.5">Open in workbench</div>
+            </div>
+            <div className="i-ph:arrow-square-out text-lg text-bolt-elements-textTertiary shrink-0" />
           </div>
         </button>
         <div className="bg-bolt-elements-artifacts-borderColor w-[1px]" />

@@ -19,8 +19,8 @@
 .landing-grid {
   position: absolute;
   inset: -50%;
-  background-image: linear-gradient(rgba(139, 92, 246, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(139, 92, 246, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.035) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
   animation: everix-grid-drift 24s linear infinite;
@@ -63,7 +63,7 @@
 
 .everix-logo-hero {
   animation: everix-logo-float 5s ease-in-out infinite;
-  filter: drop-shadow(0 0 28px rgba(139, 92, 246, 0.35));
+  filter: drop-shadow(0 0 32px rgba(0, 180, 255, 0.35));
 }
 
 .prompt-glow-frame {

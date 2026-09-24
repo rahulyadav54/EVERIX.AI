@@ -7,3 +7,9 @@ declare module '@remix-run/cloudflare' {
     cloudflare: Cloudflare;
   }
 }
+
+declare module '@remix-run/node' {
+  interface AppLoadContext {
+    cloudflare?: Cloudflare;
+  }
+}

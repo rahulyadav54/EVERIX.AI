@@ -1,15 +1,16 @@
 import { useStore } from '@nanostores/react';
 import type { Message } from 'ai';
 import { useChat } from 'ai/react';
-import { useAnimate } from 'framer-motion';
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { buildLlmRequestHeaders } from '~/lib/llm/user-settings';
+import { llmSettingsStore } from '~/lib/stores/llm-settings';
 import { cssTransition, toast, ToastContainer } from 'react-toastify';
 import { useMessageParser, usePromptEnhancer, useShortcuts, useSnapScroll } from '~/lib/hooks';
 import { useChatHistory } from '~/lib/persistence';
 import { chatStore } from '~/lib/stores/chat';
+import { resetAgentActivity, seedBuildPipeline, upsertAgentStep } from '~/lib/stores/agent-activity';
 import { workbenchStore } from '~/lib/stores/workbench';
 import { fileModificationsToHTML } from '~/utils/diff';
-import { cubicEasingFn } from '~/utils/easings';
 import { createScopedLogger, renderLogger } from '~/utils/logger';
 import { BaseChat } from './BaseChat';
 
@@ -72,11 +73,13 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
   const [chatStarted, setChatStarted] = useState(initialMessages.length > 0);
 
   const { showChat } = useStore(chatStore);
+  const llmSettings = useStore(llmSettingsStore);
 
-  const [animationScope, animate] = useAnimate();
+  const llmHeaders = useMemo(() => buildLlmRequestHeaders(llmSettings), [llmSettings]);
 
   const { messages, isLoading, input, handleInputChange, setInput, stop, append } = useChat({
     api: '/api/chat',
+    headers: llmHeaders,
     onError: (error) => {
       logger.error('Request failed\n\n', error);
       toast.error('There was an error processing your request');
@@ -97,12 +100,28 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
   }, []);
 
   useEffect(() => {
+    if (chatStarted) {
+      workbenchStore.showWorkbench.set(true);
+    }
+  }, [chatStarted]);
+
+  useEffect(() => {
     parseMessages(messages, isLoading);
+
+    if (isLoading && chatStarted) {
+      upsertAgentStep({ id: 'understand', label: 'Understanding requirements', status: 'running' });
+    }
+
+    if (!isLoading && messages.length > 0 && chatStarted) {
+      upsertAgentStep({ id: 'understand', label: 'Understanding requirements', status: 'done' });
+      upsertAgentStep({ id: 'plan', label: 'Planning architecture', status: 'done' });
+      upsertAgentStep({ id: 'scaffold', label: 'Creating project structure', status: 'running' });
+    }
 
     if (messages.length > initialMessages.length) {
       storeMessageHistory(messages).catch((error) => toast.error(error.message));
     }
-  }, [messages, isLoading, parseMessages]);
+  }, [messages, isLoading, parseMessages, chatStarted, initialMessages.length]);
 
   const scrollTextArea = () => {
     const textarea = textareaRef.current;
@@ -131,19 +150,16 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
     }
   }, [input, textareaRef]);
 
-  const runAnimation = async () => {
+  const runAnimation = () => {
     if (chatStarted) {
       return;
     }
 
-    await Promise.all([
-      animate('#examples', { opacity: 0, display: 'none' }, { duration: 0.1 }),
-      animate('#intro', { opacity: 0, flex: 1 }, { duration: 0.2, ease: cubicEasingFn }),
-    ]);
-
     chatStore.setKey('started', true);
-
     setChatStarted(true);
+    workbenchStore.showWorkbench.set(true);
+    resetAgentActivity();
+    seedBuildPipeline();
   };
 
   const sendMessage = async (_event: React.UIEvent, messageInput?: string) => {
@@ -200,7 +216,6 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
 
   return (
     <BaseChat
-      ref={animationScope}
       textareaRef={textareaRef}
       input={input}
       showChat={showChat}

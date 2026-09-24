@@ -1,9 +1,8 @@
-import { env } from 'node:process';
+import { buildLLMConfig, readExplicitProvider } from './config';
 
+/** @deprecated Use resolveLLMConfig instead */
 export function getAPIKey(cloudflareEnv: Env) {
-  /**
-   * The `cloudflareEnv` is only used when deployed or when previewing locally.
-   * In development the environment variables are available through `env`.
-   */
-  return env.ANTHROPIC_API_KEY || cloudflareEnv.ANTHROPIC_API_KEY;
+  const provider = readExplicitProvider(cloudflareEnv) ?? 'anthropic';
+
+  return buildLLMConfig(provider, cloudflareEnv).apiKey;
 }

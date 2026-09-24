@@ -1,13 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
   <defs>
-    <linearGradient id="everix" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#a78bfa" />
-      <stop offset="1" stop-color="#6d28d9" />
+    <linearGradient id="everix-bg" x1="20" y1="12" x2="100" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c4b5fd" />
+      <stop offset="1" stop-color="#5b21b6" />
     </linearGradient>
   </defs>
-  <rect width="32" height="32" rx="8" fill="url(#everix)" />
-  <path
-    fill="#fff"
-    d="M9 9h14v3.2H13.2v3.4H21.5V19H13.2v4H9V9Z"
-  />
+  <rect x="8" y="8" width="104" height="104" rx="28" fill="url(#everix-bg)" />
+  <path fill="#fff" d="M36 36h48v12H52v10h24v12H52v14H36V36Z" />
 </svg>

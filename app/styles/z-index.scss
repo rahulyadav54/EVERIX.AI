@@ -1,5 +1,9 @@
 $zIndexMax: 999;
 
+.z-header {
+  z-index: 50;
+}
+
 .z-logo {
   z-index: $zIndexMax - 1;
 }

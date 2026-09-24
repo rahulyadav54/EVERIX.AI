@@ -15,15 +15,36 @@ This project is based on the open-source [Bolt](https://github.com/stackblitz/bo
 ### Prerequisites
 
 - Node.js 18.18+
-- [pnpm](https://pnpm.io/) 9.x
-- An [Anthropic API key](https://console.anthropic.com/) (Claude)
+- npm or [pnpm](https://pnpm.io/) 9.x
+- An API key for your chosen LLM provider (see below)
 
 ### Setup
 
 ```bash
-pnpm install
-cp .env.example .env   # if present; add your API keys
-pnpm run dev
+npm install
+cp .env.example .env.local
+# Edit .env.local — pick a provider and API key
+npm run dev
+```
+
+### Free / low-cost LLM providers
+
+Set `LLM_PROVIDER` in `.env.local` (see `.env.example`):
+
+| Provider | Cost | Get a key |
+| -------- | ---- | --------- |
+| **google** | Free tier | [Google AI Studio](https://aistudio.google.com/apikey) |
+| **groq** | Free tier | [Groq Console](https://console.groq.com/keys) |
+| **openrouter** | Many free models | [OpenRouter](https://openrouter.ai/keys) |
+| **ollama** | Free (local) | [Ollama](https://ollama.com) — no cloud key |
+| **anthropic** | Paid | [Anthropic](https://console.anthropic.com/) |
+
+Example (Google Gemini):
+
+```env
+LLM_PROVIDER=google
+GOOGLE_GENERATIVE_AI_API_KEY=your_key
+LLM_MODEL=gemini-1.5-flash
 ```
 
 Open the URL shown in the terminal (usually `http://localhost:5173`).

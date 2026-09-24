@@ -1,5 +1,5 @@
 import { useStore } from '@nanostores/react';
-import type { LinksFunction } from '@remix-run/cloudflare';
+import type { LinksFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import tailwindReset from '@unocss/reset/tailwind-compat.css?url';
 import { themeStore } from './lib/stores/theme';
@@ -17,8 +17,12 @@ import 'virtual:uno.css';
 export const links: LinksFunction = () => [
   {
     rel: 'icon',
-    href: '/everix-logo.png',
+    href: '/everix-brand.png',
     type: 'image/png',
+  },
+  {
+    rel: 'apple-touch-icon',
+    href: '/everix-brand.png',
   },
   { rel: 'stylesheet', href: reactToastifyStyles },
   { rel: 'stylesheet', href: tailwindReset },
@@ -46,17 +50,19 @@ const inlineThemeCode = stripIndents`
     let theme = localStorage.getItem('${THEME_STORAGE_KEY}') || localStorage.getItem('bolt_theme');
 
     if (!theme) {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      theme = 'dark';
     }
 
-    document.querySelector('html')?.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
   }
 `;
 
 export const Head = createHead(() => (
   <>
     <meta charSet="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
     <Meta />
     <Links />
     <script dangerouslySetInnerHTML={{ __html: inlineThemeCode }} />
