@@ -25,21 +25,24 @@ export async function resolveLLMConfig(cloudflareEnv: Env): Promise<LLMConfig> {
     return fromEnvKey;
   }
 
-  const ollamaBase = readEnv('OLLAMA_BASE_URL', cloudflareEnv) ?? 'http://127.0.0.1:11434/v1';
-  const ollama = await detectOllama(ollamaBase);
+  // Ollama only exists on the developer machine — skip on Vercel/serverless.
+  if (!process.env.VERCEL) {
+    const ollamaBase = readEnv('OLLAMA_BASE_URL', cloudflareEnv) ?? 'http://127.0.0.1:11434/v1';
+    const ollama = await detectOllama(ollamaBase);
 
-  if (ollama) {
-    const model = readEnv('LLM_MODEL', cloudflareEnv) ?? ollama.model;
-    const config: LLMConfig = {
-      provider: 'ollama',
-      apiKey: readEnv('OPENAI_API_KEY', cloudflareEnv) ?? 'ollama',
-      model,
-      baseURL: ollama.baseURL,
-    };
+    if (ollama) {
+      const model = readEnv('LLM_MODEL', cloudflareEnv) ?? ollama.model;
+      const config: LLMConfig = {
+        provider: 'ollama',
+        apiKey: readEnv('OPENAI_API_KEY', cloudflareEnv) ?? 'ollama',
+        model,
+        baseURL: ollama.baseURL,
+      };
 
-    cacheAuto(config);
+      cacheAuto(config);
 
-    return config;
+      return config;
+    }
   }
 
   throw new Error(
@@ -47,8 +50,8 @@ export async function resolveLLMConfig(cloudflareEnv: Env): Promise<LLMConfig> {
       'No AI provider configured.',
       'Easiest fix: install Ollama (https://ollama.com), run `ollama signin`, then `ollama run nemotron-3-ultra:cloud` (or any model).',
       'Everix will auto-detect Ollama on localhost — no API key needed.',
-      'Or add a free key to .env.local — see .env.example (Google, Groq, OpenRouter).',
-      'Run: npm run setup:llm',
+      'On Vercel: set LLM_PROVIDER=google and GOOGLE_GENERATIVE_AI_API_KEY in Project → Environment Variables, then redeploy.',
+      'Locally: add keys to .env.local — see .env.example.',
     ].join(' '),
   );
 }

@@ -73,11 +73,17 @@ export async function resolveLLMConfigFromRequest(request: Request, cloudflareEn
     const patchedEnv: Env = {
       ...cloudflareEnv,
       LLM_PROVIDER: provider,
-      LLM_MODEL: model,
     };
 
+    // Everix managed mode sends model "auto" — use server env / defaults, not the literal string "auto".
+    if (model !== 'auto') {
+      patchedEnv.LLM_MODEL = model;
+    }
+
     if (provider === 'google' && !readEnv('GOOGLE_GENERATIVE_AI_API_KEY', patchedEnv)) {
-      throw new Error('No Gemini key on server. Add your key in AI settings (gear icon) or .env.local');
+      throw new Error(
+        'No Gemini key on the server. In Vercel: Project → Settings → Environment Variables → add GOOGLE_GENERATIVE_AI_API_KEY. Or use Settings → API keys (BYOK).',
+      );
     }
 
     return buildLLMConfig(provider, patchedEnv);

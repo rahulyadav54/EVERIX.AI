@@ -29,8 +29,8 @@ export const BYOK_PROVIDERS: ProviderDefinition[] = [
     label: 'Google Gemini',
     description: 'Bring your Gemini API key from AI Studio.',
     managed: false,
-    models: ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-3.6-flash'],
-    defaultModel: 'gemini-3.5-flash-lite',
+    models: ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash-preview-05-20'],
+    defaultModel: 'gemini-2.0-flash',
   },
   {
     id: 'openai',

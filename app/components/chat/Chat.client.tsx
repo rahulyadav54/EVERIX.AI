@@ -82,7 +82,12 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
     headers: llmHeaders,
     onError: (error) => {
       logger.error('Request failed\n\n', error);
-      toast.error('There was an error processing your request');
+      const detail = error?.message?.trim();
+      toast.error(
+        detail && detail.length < 280
+          ? detail
+          : 'Chat failed. Add GOOGLE_GENERATIVE_AI_API_KEY on Vercel (or your key in Settings → API keys), then redeploy.',
+      );
     },
     onFinish: () => {
       logger.debug('Finished streaming');

@@ -4,7 +4,7 @@ export type LLMProvider = 'anthropic' | 'google' | 'groq' | 'openrouter' | 'olla
 
 const DEFAULT_MODELS: Record<LLMProvider, string> = {
   anthropic: 'claude-3-5-sonnet-20240620',
-  google: 'gemini-3.5-flash-lite',
+  google: 'gemini-2.0-flash',
   groq: 'llama-3.3-70b-versatile',
   openrouter: 'google/gemini-2.0-flash-exp:free',
   ollama: 'llama3.2',

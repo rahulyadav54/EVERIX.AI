@@ -16,7 +16,7 @@ export const LLM_SETTINGS_STORAGE_KEY = 'everix_llm_settings_v1';
 export const DEFAULT_LLM_USER_SETTINGS: LlmUserSettings = {
   credentialMode: 'everix',
   provider: 'google',
-  model: 'gemini-3.5-flash-lite',
+  model: 'gemini-2.0-flash',
   apiKey: '',
   baseURL: '',
   useServerKey: true,
@@ -35,7 +35,7 @@ export const LLM_PROVIDER_OPTIONS: {
     id: 'google',
     label: 'Google Gemini',
     hint: 'Free tier at aistudio.google.com/apikey',
-    defaultModel: 'gemini-3.5-flash-lite',
+    defaultModel: 'gemini-2.0-flash',
     keyLabel: 'Gemini API key',
   },
   {
