@@ -113,11 +113,23 @@
 
 @media (min-width: 1024px) {
   .everix-entry-inner {
-    padding: 2.5rem 2rem 3rem;
+    padding: 1.5rem 2rem 2.5rem;
     min-height: min(100%, calc(100dvh - var(--header-height) - 1rem));
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+.everix-entry-composer {
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .everix-entry-composer {
+    margin-top: 1.25rem;
   }
 }
 

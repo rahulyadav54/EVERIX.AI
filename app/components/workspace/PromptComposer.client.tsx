@@ -54,7 +54,7 @@ export function PromptComposer({
         )}
         <textarea
           ref={textareaRef}
-          className="w-full px-3 sm:px-4 pt-3 sm:pt-4 pr-14 focus:outline-none resize-none text-sm sm:text-base text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent"
+          className="w-full px-3 sm:px-4 pt-3 sm:pt-4 pr-14 focus:outline-none resize-none text-sm sm:text-base text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent min-h-[4.75rem]"
           onKeyDown={(event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();

@@ -51,15 +51,17 @@ export function WorkspaceEntry(props: WorkspaceEntryProps) {
       <div className="everix-entry-inner">
         <ClientOnly>{() => <LlmStatusBanner />}</ClientOnly>
 
-        <header className="everix-entry-hero text-center mb-6 sm:mb-8">
-          <div className="flex justify-center mb-4 sm:mb-5">
-            <EverixLogo variant="hero" showWordmark={false} className="everix-logo-hero" />
+        <header className="everix-entry-hero text-center">
+          <div className="flex justify-center mb-3 sm:mb-4">
+            <EverixLogo variant="hero" showWordmark />
           </div>
           <h1 className="everix-hero-title">What will you build today?</h1>
           <p className="everix-hero-sub">{APP_TAGLINE}</p>
         </header>
 
-        <PromptComposer {...props} chatStarted={false} />
+        <div className="everix-entry-composer shrink-0 w-full relative z-[2]">
+          <PromptComposer {...props} chatStarted={false} />
+        </div>
 
         <div className="mt-6 sm:mt-8">
           <p className="text-xs font-medium uppercase tracking-wider text-bolt-elements-textTertiary mb-3 text-center sm:text-left">
